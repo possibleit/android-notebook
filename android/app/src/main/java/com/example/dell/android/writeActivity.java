@@ -1,11 +1,10 @@
+
 package com.example.dell.android;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,19 +12,33 @@ import android.widget.Toast;
 
 
 import com.example.dell.android.MyView.MyEditText;
-import com.example.dell.android.util.PostTask;
-import com.example.dell.android.util.PostTask2;
+import com.example.dell.android.model.item;
+import com.example.dell.android.util.Fulltask;
+import com.example.dell.android.util.dbUtil;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import okhttp3.Call;
+
 public class writeActivity extends BaseActivity{
+    private boolean type = false;
+    private String path = null;
     static File file;
     MyEditText editText;
     Button button;
     ImageView img_1;
     Button button_add;
+    Button button_query;
+
+    private ArrayList<ImageItem> images;
     @Override
     public int getLayoutId(){
         return R.layout.write_layout;
@@ -42,20 +55,46 @@ public class writeActivity extends BaseActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Date date = new Date();
-               String text = editText.getText().toString();
-               String time = date.toLocaleString();
-               int type = 1;
+                Date date = new Date();
+                final String text = editText.getText().toString();
+                final String time = date.toLocaleString();
+                if(path != null){
+                    type = true;
+                }
+                item i = new item(time,text,type,path);
+                Toast.makeText(getApplicationContext(),time + text,Toast.LENGTH_LONG).show();
+                dbUtil.insert(getApplicationContext(),i);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        HashMap<String,File> s = new HashMap<>();
-                        s.put("file",file);
-                        String s1 = PostTask2.submitData("http://10.0.2.2:8001/sendimg/",null,s);
-                        Toast.makeText(getApplicationContext(),s1,Toast.LENGTH_LONG).show();
+                        if(path != null) {
+                            file = new File(path);
+                            OkHttpUtils.post()//
+                                    .addFile("file", "messenger_01.jpg", file)//
+                                    .url("http://10.0.2.2:8001/sendimg/")
+//                                .params(params)//
+//                                .headers(headers)//
+                                    .build()//
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onError(Call call, Exception e, int id) {
+                                            Log.i("result", e.toString());
+                                        }
+
+                                        @Override
+                                        public void onResponse(String response, int id) {
+                                            Log.i("result", response);
+                                        }
+                                    });
+                        }
+                        HashMap<String,String > map = new HashMap<>();
+                        map.put("name","yang");
+                        map.put("time",time);
+                        map.put("text",text);
+                        String s2 = Fulltask.getResult("http://10.0.2.2:8001/",map,"send/");
+                        Log.i("result",s2);
                     }
                 }).start();
-                Toast.makeText(getApplicationContext(),text + time,Toast.LENGTH_LONG).show();
             }
         });
         editText = findViewById(R.id.edit_1);
@@ -64,15 +103,18 @@ public class writeActivity extends BaseActivity{
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //intent.addCategory(Intent.CATEGORY_OPENABLE);
-                //intent.setType("image/*");
-                Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(intent,1);
+                Intent intent = new Intent(writeActivity.this, ImageGridActivity.class);
+                startActivityForResult(intent, 2);
             }
         });
 
+        button_query = findViewById(R.id.query);
+        button_query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbUtil.query(getApplicationContext());
+            }
+        });
     }
 
     @Override
@@ -82,20 +124,23 @@ public class writeActivity extends BaseActivity{
             return;
         switch (requestcode){
             case 1:
-//                Bitmap bm = (Bitmap) data.getExtras().get("data");
-//                img_1.setImageBitmap(bm);
-//                break;
-                Uri uri = data.getData();
-                Cursor cursor = getContentResolver().query(uri, null, null, null,null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                    file = new File(path);
-                    Toast.makeText(getApplicationContext(),path,Toast.LENGTH_LONG).show();
+                if (resultcode == ImagePicker.RESULT_CODE_ITEMS) {
+                    if (data != null && requestcode == 1) {
+                        //获取到选择完成的图片
+                        images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                        //显示图片
+                        if (null != images && images.size() > 0) {
+                            //存储图片路径
+                            path = images.get(0).path;
+                        }
+                        img_1.setImageURI(Uri.parse(path));
+                    } else {
+                        Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
+                    }
                 }
-//                img_1.setImageUri(Uri.fromFile(new File("/sdcard/test.jpg")));
-                img_1.setImageURI(uri);
-
                 break;
         }
     }
+
+
 }
