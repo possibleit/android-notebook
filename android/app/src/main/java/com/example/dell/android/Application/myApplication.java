@@ -1,8 +1,13 @@
 package com.example.dell.android.Application;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.example.dell.android.ImageLoader.PicassoImageLoader;
+import com.example.dell.android.R;
+//import com.imnjh.imagepicker.PickerConfig;
+//import com.imnjh.imagepicker.SImagePicker;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -34,9 +39,9 @@ public class myApplication extends Application {
 
         OkHttpUtils.initClient(okHttpClient);
 
-                ImagePicker imagePicker = ImagePicker.getInstance();
+        ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new PicassoImageLoader());   //设置图片加载器
-        imagePicker.setShowCamera(true);  //显示拍照按钮
+        imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setCrop(true);        //允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(true); //是否按矩形区域保存
         imagePicker.setSelectLimit(1);    //选中数量限制
@@ -46,5 +51,10 @@ public class myApplication extends Application {
         imagePicker.setOutPutX(1000);//保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
 
+//        SImagePicker.init(new PickerConfig.Builder().setAppContext(this)
+//                .setImageLoader(new FrescoImageLoader())
+//                .setToolbaseColor(ContextCompat.getColor(this,R.color.colorPrimary))
+//                //旧的getcolor方法已经过时，新的使用方法如上
+//                .build());
     }
 }

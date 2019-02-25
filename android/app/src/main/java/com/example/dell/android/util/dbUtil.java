@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.dell.android.Data.database_openhelper;
 import com.example.dell.android.model.item;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class dbUtil {
     public static SQLiteDatabase getDataBase(Context context){
-        database_openhelper openhelper = new database_openhelper(context,"note.db",null,2);
+        database_openhelper openhelper = new database_openhelper(context,"note.db",null,3);
         return openhelper.getWritableDatabase();
     }
     public static void insert(Context context, item i){
@@ -40,7 +41,7 @@ public class dbUtil {
             boolean img_or = cursor.getString(cursor.getColumnIndex("img_or")).equals("1");
             String path = cursor.getString(cursor.getColumnIndex("path"));
             item i = new item(id,time,txt,img_or,path);
-            //Log.i("result",id + txt + time + img_or + path);
+            Log.i("result",id + txt + time + img_or + path);
             itemArrayList.add(new item(id,time,txt,img_or,path));
         }
         cursor.close();
