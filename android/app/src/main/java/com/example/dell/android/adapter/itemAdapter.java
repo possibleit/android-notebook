@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.dell.android.ImageLoader.GlideImageLoader;
 import com.example.dell.android.R;
 import com.example.dell.android.model.item;
 //import com.squareup.picasso.Picasso;
 import com.youth.xframe.adapter.XRecyclerViewAdapter;
 import com.youth.xframe.adapter.XViewHolder;
+import com.youth.xframe.utils.imageload.XImage;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -38,18 +40,20 @@ public class itemAdapter extends XRecyclerViewAdapter<item> {
     public void bindData(XViewHolder holder, item data, int position) {
 
         if(data.getitemType()){
+
 //            holder.setText(R.id.img_item_text,data.getText())
 //                    .setText(R.id.img_item_time,data.getTime())
-//                    .setImageUrl(R.id.img_item_img, Uri.parse(data.getPath()));
+//                    .setImageUrl(R.id.img_item_img,data.getPath());
             TextView textView = holder.getView(R.id.img_item_text);
             textView.setText(data.getText());
             TextView textView2 = holder.getView(R.id.img_item_time);
             textView2.setText(data.getTime());
             ImageView imageView = holder.getView(R.id.img_item_img);
-//            Picasso.with(getContext())
-//                    .load(data.getPath())
-//                    .into(imageView);
             imageView.setImageURI(Uri.parse(data.getPath()));
+
+//            XImage.getInstance().load(imageView,
+//                            "http://p9.qhimg.com/t01c2084745dc313fd1.jpg",
+//                            GlideImageLoader.circleTransform);
         }else {
             holder.setText(R.id.item_text,data.getText())
                     .setText(R.id.item_time,data.getTime());

@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".writeActivity"></activity>
+        <activity android:name=".DetailActivity"></activity>
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity"></activity>//选择图片
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity"></activity>//预览图片
 

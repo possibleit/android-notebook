@@ -10,7 +10,8 @@ public class database_openhelper extends SQLiteOpenHelper {
             "txt text not null," +
             "time varchar(20) not null," +
             "img_or boolean not null," +
-            "path varchar(50));";
+            "path varchar(50)," +
+            "top boolean not null);";
 
     public database_openhelper(Context context, String name,
                                SQLiteDatabase.CursorFactory factory, int version){

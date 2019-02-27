@@ -31,4 +31,5 @@
             android:id="@+id/img_item_img"
             />
     </LinearLayout>
+
 </LinearLayout>

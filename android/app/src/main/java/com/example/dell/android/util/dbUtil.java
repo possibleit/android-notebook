@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class dbUtil {
     public static SQLiteDatabase getDataBase(Context context){
-        database_openhelper openhelper = new database_openhelper(context,"note.db",null,3);
+        database_openhelper openhelper = new database_openhelper(context,"note.db",null,5);
         return openhelper.getWritableDatabase();
     }
     public static void insert(Context context, item i){
@@ -25,6 +25,7 @@ public class dbUtil {
         if(i.getitemType()){
             values.put("path",i.getPath());
         }
+        values.put("top",i.isTop());
         db.insert("note",null,values);
         db.close();
     }
@@ -39,12 +40,54 @@ public class dbUtil {
             String txt = cursor.getString(cursor.getColumnIndex("txt"));
             String time = cursor.getString(cursor.getColumnIndex("time"));
             boolean img_or = cursor.getString(cursor.getColumnIndex("img_or")).equals("1");
+            boolean top = cursor.getString(cursor.getColumnIndex("top")).equals("1");
             String path = cursor.getString(cursor.getColumnIndex("path"));
-            item i = new item(id,time,txt,img_or,path);
+            item i = new item(id,time,txt,img_or,path,top);
             Log.i("result",id + txt + time + img_or + path);
-            itemArrayList.add(new item(id,time,txt,img_or,path));
+            itemArrayList.add(new item(id,time,txt,img_or,path,top));
         }
         cursor.close();
         return itemArrayList;
+    }
+
+    public static ArrayList<item> query_top(Context context){
+        ArrayList<item> list = new ArrayList<>();
+        SQLiteDatabase db = getDataBase(context);
+        Cursor cursor = db.query("note",null, "top=?",new String[]{"1"},
+                null,null,null);
+        while (cursor.moveToNext()){
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            String txt = cursor.getString(cursor.getColumnIndex("txt"));
+            String time = cursor.getString(cursor.getColumnIndex("time"));
+            boolean img_or = cursor.getString(cursor.getColumnIndex("img_or")).equals("1");
+            boolean top = cursor.getString(cursor.getColumnIndex("top")).equals("1");
+            String path = cursor.getString(cursor.getColumnIndex("path"));
+            item i = new item(id,time,txt,img_or,path,top);
+            Log.i("result",id + txt + time + img_or + path);
+            list.add(new item(id,time,txt,img_or,path,top));
+        }
+        return list;
+    }
+
+    public static void delete(Context context, String time){
+        SQLiteDatabase db = getDataBase(context);
+        db.delete("note","time=?",new String[]{time});
+        db.close();
+    }
+
+    public static void update(Context context, String time,String it, String va){
+        SQLiteDatabase db = getDataBase(context);
+        ContentValues values = new ContentValues();
+        values.put(it,va);
+        db.update("note",values,"time=?",new String[]{time});
+        db.close();
+    }
+
+    public static void update_top(Context context, String time,boolean top){
+        SQLiteDatabase db = getDataBase(context);
+        ContentValues values = new ContentValues();
+        values.put("top",top);
+        db.update("note",values,"time=?",new String[]{time});
+        db.close();
     }
 }

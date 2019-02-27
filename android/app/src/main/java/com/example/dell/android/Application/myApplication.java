@@ -4,12 +4,14 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
+import com.example.dell.android.ImageLoader.GlideImageLoader;
 import com.example.dell.android.ImageLoader.PicassoImageLoader;
 import com.example.dell.android.R;
 //import com.imnjh.imagepicker.PickerConfig;
 //import com.imnjh.imagepicker.SImagePicker;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
+import com.youth.xframe.XFrame;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -56,5 +58,9 @@ public class myApplication extends Application {
 //                .setToolbaseColor(ContextCompat.getColor(this,R.color.colorPrimary))
 //                //旧的getcolor方法已经过时，新的使用方法如上
 //                .build());
+
+        XFrame.initXImageLoader(new GlideImageLoader(getApplicationContext()));
+        XFrame.initXLog();
+
     }
 }
