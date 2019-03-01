@@ -95,9 +95,6 @@ public class MainActivity extends BaseActivity {
             case R.id.menu_change:
                 //TODO
                 //全选界面
-                Intent intent1 = new Intent(getApplicationContext(),activity_list.class);
-                intent1.putExtra("title","list");
-                startActivity(intent1);
                 break;
         }
        return super.onOptionsItemSelected(item);
