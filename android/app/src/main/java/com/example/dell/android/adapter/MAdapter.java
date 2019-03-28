@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -91,11 +92,15 @@ public class MAdapter extends RecyclerView.Adapter<MAdapter.ViewHolder> implemen
 
         public static class ViewHolder extends RecyclerView.ViewHolder{
             public TextView textView;
-            public ImageView imageView;
+            public Button btnTop;
+            public Button btnUnRead;
+            public Button btnDelete;
             private ViewHolder(View view){
                 super(view);
                 textView = view.findViewById(R.id.re_list);
-
+                btnTop = view.findViewById(R.id.btnTop);
+                btnUnRead = view.findViewById(R.id.btnUnRead);
+                btnDelete = view.findViewById(R.id.btnDelete);
             }
         }
     }

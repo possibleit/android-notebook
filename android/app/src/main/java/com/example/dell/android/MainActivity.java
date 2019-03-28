@@ -17,7 +17,6 @@ import com.example.dell.android.adapter.itemAdapter;
 import com.example.dell.android.model.item;
 import com.example.dell.android.util.dbUtil;
 import com.yalantis.phoenix.PullToRefreshView;
-import com.youth.xframe.adapter.XRecyclerViewAdapter;
 import com.youth.xframe.adapter.decoration.DividerDecoration;
 import com.youth.xframe.adapter.decoration.StickyHeaderDecoration;
 import com.youth.xframe.utils.log.XLog;
@@ -43,11 +42,6 @@ public class MainActivity extends BaseActivity {
     public void initData(Bundle bundle) {
         //初始化数据
         itemList = dbUtil.query(getApplicationContext());
-//        itemList.clear();
-//        itemList.add(new item(0,"2019-02-27","1",false,null,true));
-//        itemList.add(new item(0,"2019-02-27","1",false,null,false));
-//        itemList.add(new item(0,"2018-02-27","2",false,null,false));
-//        itemList.add(new item(0,"2017-02-27","1",false,null,true));
         XLog.list(itemList);
         predo(itemList);
         XLog.list(itemList);
@@ -60,8 +54,103 @@ public class MainActivity extends BaseActivity {
         mPullToRefreshView.setOnRefreshListener(refresh_listener);
         recyclerView = findViewById(R.id.listview);
         adapter = new itemAdapter(recyclerView, itemList);
-        adapter.setOnItemClickListener(click_listener);
-        adapter.setOnItemLongClickListener(longclick_listener);
+//        adapter.setOnItemClickListener(click_listener);
+//        adapter.setOnItemLongClickListener(longclick_listener);
+        /**---------------------------------------------------
+         * @author : Qian
+         * @Date : 23:58 2019/3/28
+         * @Description : 添加了删除和置顶按钮的监听事件，以及点击与长按监听事件
+         *                  由于点击事件的冲突，故在adapter中设置点击与长按事件
+         --------------------------------------------------*/
+        adapter.setOnDelListener(new itemAdapter.onSwipeListener() {
+            @Override
+            public void click(int pos){
+                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                intent.putExtra("title", "便签详情");
+                item i = adapter.getItem(pos);
+                intent.putExtra("item",i);
+                startActivity(intent);
+            }
+
+            @Override
+            public void longclick(final int pos){
+                //TODO 长按事件
+                //删除便签，置顶，取消
+                final String[] items;
+                if(!adapter.getItem(pos).isTop()) {
+                    items = new String[] {
+                            "置顶",
+                            "删除便签",
+                            "取消",
+                    };
+                }else {
+                    items = new String[] {
+                            "取消置顶",
+                            "删除便签",
+                            "取消",
+                    };
+                }
+
+                BottomSheet.Builder builder = new BottomSheet.Builder(MainActivity.this);
+                builder.setTitle("操作");
+
+                builder.setItems(items,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // your code here.
+                        switch (which){
+                            case 0:
+                                /**
+                                 * 置顶 由于adapter刷新问题，显示有bug，故在更新后有读取一次数据库，重置所有item
+                                 * 有些僵硬
+                                 */
+                                //TODO 暂时有问题
+                                item i = adapter.getItem(pos);
+                                adapter.remove(pos);
+                                adapter.add(0, i);
+                                dbUtil.update_top(getApplicationContext(),i.getTime(),!i.isTop());
+                                itemList = dbUtil.query(getApplicationContext());
+                                predo(itemList);
+                                adapter.setDataLists(itemList);
+                                break;
+                            case 1:
+                                //删除
+                                dbUtil.delete(getApplicationContext(),adapter.getItem(pos).getTime());
+                                adapter.remove(pos);
+                                break;
+                            case 2:
+                                break;
+                        }
+                    }
+                });
+                builder.setContentType(BottomSheet.LIST);
+                builder.setTitleTextColor(0xFFFF5252);
+                builder.setItemTextColor(0xFFFF5252);
+                builder.setBackgroundColor(Color.WHITE);
+                builder.setDividers(true);
+                builder.show();
+            }
+
+
+            @Override
+            public void onDel(int pos) {
+                dbUtil.delete(getApplicationContext(),adapter.getItem(pos).getTime());
+                adapter.remove(pos);
+                Toast.makeText(getApplicationContext(),"del clicked and delete position " + pos,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTop(int pos) {
+                item i = adapter.getItem(pos);
+//                adapter.remove(pos);
+//                adapter.add(0, i);
+                dbUtil.update_top(getApplicationContext(), i.getTime(), !i.isTop());
+                itemList = dbUtil.query(getApplicationContext());
+                predo(itemList);
+                adapter.setDataLists(itemList);
+                Toast.makeText(getApplicationContext(),"top clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.addItemDecoration(new DividerDecoration(Color.parseColor("#C4C4C4"),1));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -73,7 +162,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onResume(){
-
+        /**
+         * 期望在这里存储数据库，之后会有修改
+         */
         super.onResume();
     }
 
@@ -94,7 +185,9 @@ public class MainActivity extends BaseActivity {
                break;
             case R.id.menu_change:
                 //TODO
-                //全选界面
+                /**
+                * 暂时有问题
+                */
                 Intent intent1 = new Intent(getApplicationContext(),activity_list.class);
                 intent1.putExtra("title","list");
                 startActivity(intent1);
@@ -103,73 +196,6 @@ public class MainActivity extends BaseActivity {
        return super.onOptionsItemSelected(item);
     }
 
-    XRecyclerViewAdapter.OnItemClickListener click_listener = new XRecyclerViewAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(View v, int position) {
-            //点击事件,进入详情界面
-            Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-            intent.putExtra("title", "便签详情");
-            item i = adapter.getItem(position);
-            intent.putExtra("item",i);
-            startActivity(intent);
-        }
-    };
-
-    XRecyclerViewAdapter.OnItemLongClickListener longclick_listener = new XRecyclerViewAdapter.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(View v, final int position) {
-            //TODO 长按事件
-            //删除便签，置顶，取消
-            final String[] items;
-            if(!adapter.getItem(position).isTop()) {
-                items = new String[] {
-                    "置顶",
-                    "删除便签",
-                    "取消",
-                };
-            }else {
-                items = new String[] {
-                    "取消置顶",
-                    "删除便签",
-                    "取消",
-                };
-            }
-
-            BottomSheet.Builder builder = new BottomSheet.Builder(MainActivity.this);
-            builder.setTitle("操作");
-
-            builder.setItems(items,new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // your code here.
-                    switch (which){
-                        case 0:
-                            //置顶
-                            //TODO 暂时有问题
-                            item i = adapter.getItem(position);
-                            adapter.remove(position);
-                            adapter.add(0, i);
-                            dbUtil.update_top(getApplicationContext(),i.getTime(),!i.isTop());
-                            break;
-                        case 1:
-                            //删除
-                            dbUtil.delete(getApplicationContext(),adapter.getItem(position).getTime());
-                            adapter.remove(position);
-                            break;
-                        case 2:
-                            break;
-                    }
-                }
-            });
-            builder.setContentType(BottomSheet.LIST);
-            builder.setTitleTextColor(0xFFFF5252);
-            builder.setItemTextColor(0xFFFF5252);
-            builder.setBackgroundColor(Color.WHITE);
-            builder.setDividers(true);
-            builder.show();
-            return false;
-        }
-    };
 
     PullToRefreshView.OnRefreshListener refresh_listener = new PullToRefreshView.OnRefreshListener() {
         @Override
@@ -178,7 +204,12 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void run() {
                     //TODO
-                    //同步
+                    /**
+                     * 读取数据库，更新所有item
+                     */
+                    itemList = dbUtil.query(getApplicationContext());
+                    predo(itemList);
+                    adapter.setDataLists(itemList);
                     mPullToRefreshView.setRefreshing(false);
                 }
             }, 1000);
@@ -186,7 +217,7 @@ public class MainActivity extends BaseActivity {
     };
 
     public void predo(ArrayList<item> list){
-       num = 0;
+        num = 0;
         for(int i=0;i<itemList.size();i++){//将置顶的item放在list前面，方便后续操作
             if(itemList.get(i).isTop()){
                itemList.add(0,itemList.remove(i));
