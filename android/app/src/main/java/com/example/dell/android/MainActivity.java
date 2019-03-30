@@ -188,9 +188,7 @@ public class MainActivity extends BaseActivity {
                 /**
                 * 暂时有问题
                 */
-                Intent intent1 = new Intent(getApplicationContext(),activity_list.class);
-                intent1.putExtra("title","list");
-                startActivity(intent1);
+
                 break;
         }
        return super.onOptionsItemSelected(item);

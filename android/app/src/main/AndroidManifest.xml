@@ -18,7 +18,7 @@
         </activity>
         <activity android:name=".writeActivity"></activity>
         <activity android:name=".DetailActivity"></activity>
-        <activity android:name=".activity_list"></activity>
+        <activity android:name=".previewActivity"></activity>
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity"></activity>//选择图片
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity"></activity>
         <activity android:name=".adapter.sa$MainActivity" />//预览图片

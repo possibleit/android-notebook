@@ -31,14 +31,6 @@ public class myApplication extends Application {
                 //其他配置
                 .build();
 
-//        CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-//                .cookieJar(cookieJar)
-//                //其他配置
-//                .build();
-//
-//        OkHttpUtils.initClient(okHttpClient);
-
         OkHttpUtils.initClient(okHttpClient);
 
         ImagePicker imagePicker = ImagePicker.getInstance();
@@ -52,12 +44,6 @@ public class myApplication extends Application {
         imagePicker.setFocusHeight(800);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
         imagePicker.setOutPutX(1000);//保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
-
-//        SImagePicker.init(new PickerConfig.Builder().setAppContext(this)
-//                .setImageLoader(new FrescoImageLoader())
-//                .setToolbaseColor(ContextCompat.getColor(this,R.color.colorPrimary))
-//                //旧的getcolor方法已经过时，新的使用方法如上
-//                .build());
 
         XFrame.initXImageLoader(new GlideImageLoader(getApplicationContext()));
         XFrame.initXLog();
