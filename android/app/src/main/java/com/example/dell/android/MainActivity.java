@@ -165,6 +165,9 @@ public class MainActivity extends BaseActivity {
         /**
          * 期望在这里存储数据库，之后会有修改
          */
+        itemList = dbUtil.query(getApplicationContext());
+        predo(itemList);
+        adapter.setDataLists(itemList);
         super.onResume();
     }
 

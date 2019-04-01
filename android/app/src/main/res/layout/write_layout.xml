@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addimg"
-        android:text="添加图片"/>
-
-    <com.example.dell.android.MyView.MyEditText
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/dtitle"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:id="@+id/edit_1"
-        android:textSize="30dp"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/img_1" />
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#666"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-</LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addimg"
+            android:text="添加图片"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/share"
+            android:text="share"
+            android:clickable="false"/>
+    </LinearLayout>
+
+    <!--<com.example.dell.android.MyView.MyEditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="280dp"-->
+        <!--android:gravity="top"-->
+        <!--android:inputType="textMultiLine"-->
+        <!--android:id="@+id/edit_1"-->
+        <!--android:textSize="30dp"/>-->
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/img_1" />-->
+    <com.example.dell.android.MyView.RichTextEditor
+        android:id="@+id/richEditor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/dtitle"
+        android:background="#fff" />
+
+</RelativeLayout>
