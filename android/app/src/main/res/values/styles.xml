@@ -21,5 +21,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <!-- 还可以加入一些弹出和退出的动画 (lan)-->
     </style>
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/indigo</item>
+        <item name="colorControlActivated">@color/pink</item>
+    </style>
 
 </resources>

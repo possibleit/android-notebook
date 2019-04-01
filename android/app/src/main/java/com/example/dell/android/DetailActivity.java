@@ -35,7 +35,7 @@ public class DetailActivity extends BaseActivity {
     }
 
     @Override
-    public void initView(){
+    public void initView() {
         detail_text = findViewById(R.id.detail_text);
         detail_text.setText(i.getText());
         button = findViewById(R.id.btn_shot);
@@ -45,20 +45,16 @@ public class DetailActivity extends BaseActivity {
 
 
                 final String[] items;
-                    items = new String[]{
-                            "以文字形式",
-                            "以图片形式",
-                            "取消",
-                    };
-
-                BottomSheet.Builder builder = new BottomSheet.Builder(DetailActivity.this);
-                builder.setTitle("分享");
-
-                builder.setItems(items,new DialogInterface.OnClickListener() {
+                items = new String[]{
+                        "以文字形式",
+                        "以图片形式",
+                        "取消",
+                };
+                com.example.dell.android.MyView.BottomSheet bottomSheet = new com.example.dell.android.MyView.BottomSheet(items, DetailActivity.this, "分享");
+                bottomSheet.setListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // your code here.
-                        switch (which){
+                        switch (which) {
                             case 0:
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setType("text/plain");
@@ -74,11 +70,11 @@ public class DetailActivity extends BaseActivity {
                                 detail_img.setImageBitmap(b);
                                 //用这种方法parse Uri会出现截出的图片背景色为黑色
 
-                                Uri imageUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), b, null,null));
+                                Uri imageUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), b, null, null));
 
-                                Intent i = new Intent(DetailActivity.this,previewActivity.class);
+                                Intent i = new Intent(DetailActivity.this, previewActivity.class);
                                 i.putExtra("title", "preview");
-                                i.putExtra("imguri",imageUri.toString());
+                                i.putExtra("imguri", imageUri.toString());
                                 startActivity(i);
 //                                Intent shareIntent = new Intent();
 //                                shareIntent.setAction(Intent.ACTION_SEND);
@@ -91,20 +87,16 @@ public class DetailActivity extends BaseActivity {
                         }
                     }
                 });
-                builder.setContentType(BottomSheet.LIST);
-                builder.setTitleTextColor(0x000000);
-                builder.setItemTextColor(0x000000);
-                builder.setBackgroundColor(Color.WHITE);
-                builder.setDividers(true);
-                builder.show();
+                bottomSheet.show();
+                if (i.isType()) {
+                    detail_img = findViewById(R.id.detail_img);
+                    detail_img.setImageURI(Uri.parse(i.getPath()));
+                }
+
             }
         });
-        if(i.isType()) {
-            detail_img = findViewById(R.id.detail_img);
-            detail_img.setImageURI(Uri.parse(i.getPath()));
-        }
-
     }
+
     public Bitmap shot(View view) {
         /**
          * 创建一个bitmap放于画布之上进行绘制 （简直如有神助）
@@ -114,6 +106,7 @@ public class DetailActivity extends BaseActivity {
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
+        }
     }
 
-}
+

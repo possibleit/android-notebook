@@ -27,7 +27,7 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:background="#d9dee4"
-            android:text="置顶"
+            android:text="@string/list_top"
             android:textColor="@android:color/white"/>
 
         <Button
@@ -36,6 +36,7 @@
             android:layout_height="match_parent"
             android:background="#ecd50a"
             android:clickable="true"
+            android:focusable="true"
             android:text="标记未读"
             android:textColor="@android:color/white"/>
 
@@ -44,7 +45,7 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:background="@color/red_ff4a57"
-            android:text="删除"
+            android:text="@string/list_del"
             android:textColor="@android:color/white"/>
 
 

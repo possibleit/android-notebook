@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,6 +8,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/img_pre"
-        android:padding="4dp" />
+        android:padding="4dp"
+        android:layout_above="@+id/bottom"/>
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#666"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pre_share"
+            android:text="@string/pre_share"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pre_save"
+            android:text="@string/pre_save"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
