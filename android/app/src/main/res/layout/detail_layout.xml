@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/scr"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bot"
-        android:id="@+id/scr">
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/detail_text"
             android:id="@+id/detail_img"/>
-    </ScrollView>
     <LinearLayout
         android:id="@+id/bot"
         android:layout_width="match_parent"

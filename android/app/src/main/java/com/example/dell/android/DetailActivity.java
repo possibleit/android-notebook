@@ -25,7 +25,6 @@ public class DetailActivity extends BaseActivity {
     private EditText detail_text;
     private Button button_share,button_del;
     private ImageView detail_img;
-    private ScrollView scr;
     item i = null;
     @Override
     public int getLayoutId(){
@@ -40,7 +39,6 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        scr = findViewById(R.id.scr);
         detail_text = findViewById(R.id.detail_text);
         detail_text.setText(i.getText());
         detail_text.setEnabled(false);
