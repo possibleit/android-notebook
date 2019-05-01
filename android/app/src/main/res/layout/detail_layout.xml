@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/scr"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_shot"
-        android:text="shot"/>
-    <EditText
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/detail_text"
-        android:editable="false"
-        android:layout_margin="2dp"
-        />
-    <ImageView
+        android:layout_above="@+id/bot"
+        android:id="@+id/scr">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_text"
+            android:layout_margin="2dp"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_text"
+            android:id="@+id/detail_img"/>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/bot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_img"/>
-</LinearLayout>
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#666"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+         <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_shot"
+             android:layout_weight="1"
+            android:text="@string/pre_share"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_delete"
+            android:layout_weight="1"
+            android:text="@string/item_del"/>
+    </LinearLayout>
+</RelativeLayout>

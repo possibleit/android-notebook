@@ -12,16 +12,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 import com.example.dell.android.model.item;
 import com.example.dell.android.util.dbUtil;
 
 import org.michaelbel.bottomsheet.BottomSheet;
 
+import static com.example.dell.android.MainActivity.itemList;
+
 public class DetailActivity extends BaseActivity {
     private EditText detail_text;
-    private Button button;
+    private Button button_share,button_del;
     private ImageView detail_img;
+    private ScrollView scr;
     item i = null;
     @Override
     public int getLayoutId(){
@@ -36,10 +40,27 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        scr = findViewById(R.id.scr);
         detail_text = findViewById(R.id.detail_text);
         detail_text.setText(i.getText());
-        button = findViewById(R.id.btn_shot);
-        button.setOnClickListener(new View.OnClickListener() {
+        detail_text.setEnabled(false);
+        detail_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                detail_text.setEnabled(true);
+            }
+        });
+        button_del = findViewById(R.id.btn_delete);
+        button_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemList.remove(i);
+                dbUtil.delete(getApplicationContext(),i.getTime());
+                finish();
+            }
+        });
+        button_share = findViewById(R.id.btn_shot);
+        button_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -88,13 +109,14 @@ public class DetailActivity extends BaseActivity {
                     }
                 });
                 bottomSheet.show();
-                if (i.isType()) {
-                    detail_img = findViewById(R.id.detail_img);
-                    detail_img.setImageURI(Uri.parse(i.getPath()));
-                }
+
 
             }
         });
+         if (i.isType()) {
+                    detail_img = findViewById(R.id.detail_img);
+                    detail_img.setImageURI(Uri.parse(i.getPath()));
+                }
     }
 
     public Bitmap shot(View view) {
@@ -102,7 +124,7 @@ public class DetailActivity extends BaseActivity {
          * 创建一个bitmap放于画布之上进行绘制 （简直如有神助）
          */
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),
-                view.getHeight(), Bitmap.Config.ARGB_4444);
+                view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
