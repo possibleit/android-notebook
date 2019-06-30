@@ -95,11 +95,6 @@ public class DetailActivity extends BaseActivity {
                                 i.putExtra("title", "preview");
                                 i.putExtra("imguri", imageUri.toString());
                                 startActivity(i);
-//                                Intent shareIntent = new Intent();
-//                                shareIntent.setAction(Intent.ACTION_SEND);
-//                                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-//                                shareIntent.setType("image/*");
-//                                startActivity(Intent.createChooser(shareIntent, "分享到"));
                                 break;
                             case 2:
                                 break;
