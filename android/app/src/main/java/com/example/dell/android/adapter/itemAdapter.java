@@ -3,38 +3,28 @@ package com.example.dell.android.adapter;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.dell.android.ImageLoader.GlideImageLoader;
 import com.example.dell.android.R;
-import com.example.dell.android.model.item;
-//import com.squareup.picasso.Picasso;
+import com.example.dell.android.model.Note;
 import com.youth.xframe.adapter.XRecyclerViewAdapter;
 import com.youth.xframe.adapter.XViewHolder;
-import com.youth.xframe.utils.imageload.XImage;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
-public class itemAdapter extends XRecyclerViewAdapter<item> {
+public class itemAdapter extends XRecyclerViewAdapter<Note> {
 
     private onSwipeListener mOnSwipeListener;
-    public itemAdapter(@NonNull RecyclerView mRecyclerView, List<item> dataLists){
+    public itemAdapter(@NonNull RecyclerView mRecyclerView, List<Note> dataLists){
         super(mRecyclerView,dataLists);
     }
 
     @Override
-    public int getItemLayoutResId(item data,int position){
+    public int getItemLayoutResId(Note note,int position){
         int layoutResId = -1;
-        if (data.getitemType()){
+        if (note.hasImage()){
             layoutResId = R.layout.image_item;
         }else {
             layoutResId = R.layout.item;
@@ -43,20 +33,23 @@ public class itemAdapter extends XRecyclerViewAdapter<item> {
     }
 
     @Override
-    public void bindData(final XViewHolder holder, item data, final int position) {
+    public void bindData(final XViewHolder holder, Note note, final int position) {
 
-        if(data.getitemType()){
+//        Note note = datalist.get(position);
+        if(note.hasImage()){//判断是否含有图片
+
             LinearLayout content = holder.getView(R.id.imgitem_content);
             TextView textView = holder.getView(R.id.img_item_text);
-            textView.setText(data.getText());
             TextView textView2 = holder.getView(R.id.img_item_time);
-            textView2.setText(data.getTime());
             ImageView imageView = holder.getView(R.id.img_item_img);
-            imageView.setImageURI(Uri.parse(data.getPath()));
             Button imgitem_btnTop = holder.getView(R.id.imgitem_btnTop);
-            imgitem_btnTop.setText(data.isTop() ? "取消置顶":"置顶");
 //            Button imgitem_btnUnRead = holder.getView(R.id.imgitem_btnUnRead);
             Button imgitem_btnDelete = holder.getView(R.id.imgitem_btnDelete);
+
+            textView.setText(note.getTime());
+            textView2.setText(note.getTopText());
+            imageView.setImageURI(Uri.parse(note.getTopImagePath()));
+            imgitem_btnTop.setText(true ? "取消置顶":"置顶");
             /**---------------------------------------------------
              * @author : Qian
              * @Date : 0:08 2019/3/29
@@ -116,12 +109,14 @@ public class itemAdapter extends XRecyclerViewAdapter<item> {
             });
         }else {
             LinearLayout content = holder.getView(R.id.item_content);
-            holder.setText(R.id.item_text,data.getText())
-                    .setText(R.id.item_time,data.getTime());
+            TextView textView = holder.getView(R.id.item_text);
+            TextView textView2 = holder.getView(R.id.item_time);
             Button item_btnTop = holder.getView(R.id.item_btnTop);
-            item_btnTop.setText(data.isTop() ? "取消置顶":"置顶");
-//            Button item_btnUnRead = holder.getView(R.id.item_btnUnRead);
             Button item_btnDelete = holder.getView(R.id.item_btnDelete);
+            textView.setText(note.getTime());
+            textView2.setText(note.getTopText());
+            item_btnTop.setText("置顶");
+
 
             content.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

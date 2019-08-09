@@ -26,23 +26,20 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="06fcfbe2-77e2-4ded-8996-3eef0117e58f">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from note]]></console>
+    <connection id="db75a212-1dd6-4ef3-ac6f-ee8b855a0e4d">
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from note
+select * from inputstr]]></console>
     </connection>
-    <connection id="2a0b41c4-816c-4ad9-9e48-9999a9fe3056">
-      <console name="Connection 1" type="STANDARD" schema="main" session="Main"><![CDATA[select * from note]]></console>
-    </connection>
-    <connection id="f1848832-1e4c-44e4-a7b2-92edbe79fe0d">
-      <console name="Connection 2" type="STANDARD" schema="main" session="Main"><![CDATA[select * from note]]></console>
+    <connection id="f65dd1d8-0f95-4164-815e-f385047a152e">
+      <console name="Connection 1" type="STANDARD" schema="main" session="Main"><![CDATA[select * from inputstr]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="06fcfbe2-77e2-4ded-8996-3eef0117e58f" />
-    <connection id="2a0b41c4-816c-4ad9-9e48-9999a9fe3056" />
-    <connection id="f1848832-1e4c-44e4-a7b2-92edbe79fe0d" />
+    <connection id="db75a212-1dd6-4ef3-ac6f-ee8b855a0e4d" />
+    <connection id="f65dd1d8-0f95-4164-815e-f385047a152e" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -67,27 +64,26 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="06fcfbe2-77e2-4ded-8996-3eef0117e58f" active="true">
+      <connection id="db75a212-1dd6-4ef3-ac6f-ee8b855a0e4d" active="true">
         <database>
           <name value="Connection" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="3.2" />
+          <database-version value="3.21" />
           <driver-source value="BUILTIN" />
           <driver-library value="" />
           <driver value="" />
           <url-type value="FILE" />
-          <host value="" />
-          <port value="" />
-          <database value="" />
+          <host value="localhost" />
+          <port value="1234" />
+          <database value="database" />
           <files>
-            <file path="C:\Users\DELL\Desktop\note.db" schema="main" />
+            <file path="C:\Users\DELL\Desktop\de.db" schema="main" />
           </files>
-          <os-authentication value="false" />
-          <empty-password value="false" />
+          <type value="NONE" />
           <user value="" />
-          <password value="" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />
@@ -97,7 +93,7 @@
           <proxy-host value="" />
           <proxy-port value="22" />
           <proxy-user value="" />
-          <proxy-password value="" />
+          <deprecated-proxy-pwd value="" />
           <auth-type value="PASSWORD" />
           <key-file value="" />
           <key-passphrase value="" />
@@ -119,11 +115,11 @@
           <environment-type value="default" />
           <idle-time-to-disconnect value="30" />
           <idle-time-to-disconnect-pool value="5" />
-          <password-expiry-time value="10" />
+          <credential-expiry-time value="10" />
           <max-connection-pool-size value="7" />
           <alternative-statement-delimiter value="" />
         </details>
-        <object-filters hide-empty-schemas="false">
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
           <object-type-filter use-master-settings="true">
             <object-type name="SCHEMA" enabled="true" />
             <object-type name="USER" enabled="true" />
@@ -154,27 +150,26 @@
           <object-name-filters />
         </object-filters>
       </connection>
-      <connection id="2a0b41c4-816c-4ad9-9e48-9999a9fe3056" active="true">
+      <connection id="f65dd1d8-0f95-4164-815e-f385047a152e" active="true">
         <database>
           <name value="Connection 1" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="3.2" />
+          <database-version value="3.21" />
           <driver-source value="BUILTIN" />
           <driver-library value="" />
           <driver value="" />
           <url-type value="FILE" />
-          <host value="" />
-          <port value="" />
-          <database value="" />
+          <host value="localhost" />
+          <port value="1234" />
+          <database value="database" />
           <files>
-            <file path="C:\Users\DELL\Desktop\note.db" schema="main" />
+            <file path="C:\Users\DELL\Desktop\demo.db" schema="main" />
           </files>
-          <os-authentication value="false" />
-          <empty-password value="false" />
+          <type value="NONE" />
           <user value="" />
-          <password value="" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />
@@ -184,7 +179,7 @@
           <proxy-host value="" />
           <proxy-port value="22" />
           <proxy-user value="" />
-          <proxy-password value="" />
+          <deprecated-proxy-pwd value="" />
           <auth-type value="PASSWORD" />
           <key-file value="" />
           <key-passphrase value="" />
@@ -206,98 +201,11 @@
           <environment-type value="default" />
           <idle-time-to-disconnect value="30" />
           <idle-time-to-disconnect-pool value="5" />
-          <password-expiry-time value="10" />
+          <credential-expiry-time value="10" />
           <max-connection-pool-size value="7" />
           <alternative-statement-delimiter value="" />
         </details>
-        <object-filters hide-empty-schemas="false">
-          <object-type-filter use-master-settings="true">
-            <object-type name="SCHEMA" enabled="true" />
-            <object-type name="USER" enabled="true" />
-            <object-type name="ROLE" enabled="true" />
-            <object-type name="PRIVILEGE" enabled="true" />
-            <object-type name="CHARSET" enabled="true" />
-            <object-type name="TABLE" enabled="true" />
-            <object-type name="VIEW" enabled="true" />
-            <object-type name="MATERIALIZED_VIEW" enabled="true" />
-            <object-type name="NESTED_TABLE" enabled="true" />
-            <object-type name="COLUMN" enabled="true" />
-            <object-type name="INDEX" enabled="true" />
-            <object-type name="CONSTRAINT" enabled="true" />
-            <object-type name="DATASET_TRIGGER" enabled="true" />
-            <object-type name="DATABASE_TRIGGER" enabled="true" />
-            <object-type name="SYNONYM" enabled="true" />
-            <object-type name="SEQUENCE" enabled="true" />
-            <object-type name="PROCEDURE" enabled="true" />
-            <object-type name="FUNCTION" enabled="true" />
-            <object-type name="PACKAGE" enabled="true" />
-            <object-type name="TYPE" enabled="true" />
-            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
-            <object-type name="ARGUMENT" enabled="true" />
-            <object-type name="DIMENSION" enabled="true" />
-            <object-type name="CLUSTER" enabled="true" />
-            <object-type name="DBLINK" enabled="true" />
-          </object-type-filter>
-          <object-name-filters />
-        </object-filters>
-      </connection>
-      <connection id="f1848832-1e4c-44e4-a7b2-92edbe79fe0d" active="true">
-        <database>
-          <name value="Connection 2" />
-          <description value="" />
-          <database-type value="SQLITE" />
-          <config-type value="BASIC" />
-          <database-version value="3.2" />
-          <driver-source value="BUILTIN" />
-          <driver-library value="" />
-          <driver value="" />
-          <url-type value="FILE" />
-          <host value="" />
-          <port value="" />
-          <database value="" />
-          <files>
-            <file path="C:\Users\DELL\Desktop\note.db" schema="main" />
-          </files>
-          <os-authentication value="false" />
-          <empty-password value="false" />
-          <user value="" />
-          <password value="" />
-        </database>
-        <properties>
-          <auto-commit value="false" />
-        </properties>
-        <ssh-settings>
-          <active value="false" />
-          <proxy-host value="" />
-          <proxy-port value="22" />
-          <proxy-user value="" />
-          <proxy-password value="" />
-          <auth-type value="PASSWORD" />
-          <key-file value="" />
-          <key-passphrase value="" />
-        </ssh-settings>
-        <ssl-settings>
-          <active value="false" />
-          <certificate-authority-file value="" />
-          <client-certificate-file value="" />
-          <client-key-file value="" />
-        </ssl-settings>
-        <details>
-          <charset value="UTF-8" />
-          <session-management value="true" />
-          <ddl-file-binding value="true" />
-          <database-logging value="false" />
-          <connect-automatically value="true" />
-          <restore-workspace value="true" />
-          <restore-workspace-deep value="true" />
-          <environment-type value="default" />
-          <idle-time-to-disconnect value="30" />
-          <idle-time-to-disconnect-pool value="5" />
-          <password-expiry-time value="10" />
-          <max-connection-pool-size value="7" />
-          <alternative-statement-delimiter value="" />
-        </details>
-        <object-filters hide-empty-schemas="false">
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
           <object-type-filter use-master-settings="true">
             <object-type name="SCHEMA" enabled="true" />
             <object-type name="USER" enabled="true" />
@@ -432,11 +340,11 @@
         <data-length-threshold value="100" />
         <popup-delay value="1000" />
       </text-editor-popup>
-      <values-list-popup>
+      <values-actions-popup>
         <show-popup-button value="true" />
         <element-count-threshold value="1000" />
         <data-length-threshold value="250" />
-      </values-list-popup>
+      </values-actions-popup>
       <general>
         <fetch-block-size value="100" />
         <fetch-timeout value="30" />

@@ -12,26 +12,18 @@ import com.example.dell.android.R;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 import com.youth.xframe.XFrame;
-import com.zhy.http.okhttp.OkHttpUtils;
+
+import org.litepal.LitePalApplication;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
-public class myApplication extends Application {
+public class myApplication extends LitePalApplication {
     @Override
     public void onCreate()
     {
         super.onCreate();
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-//                .addInterceptor(new LoggerInterceptor("TAG"))
-                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                //其他配置
-                .build();
-
-        OkHttpUtils.initClient(okHttpClient);
 
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new PicassoImageLoader());   //设置图片加载器
@@ -46,7 +38,10 @@ public class myApplication extends Application {
         imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
 
         XFrame.initXImageLoader(new GlideImageLoader(getApplicationContext()));
-        XFrame.initXLog();
+        XFrame.initXLog()//初始化XLog
+                .setTag("Test")//设置全局tag
+                .setShowThreadInfo(false)//是否开启线程信息显示，默认true
+                .setDebug(false);//是否显示日志，默认true，发布时最好关闭
 
     }
 }

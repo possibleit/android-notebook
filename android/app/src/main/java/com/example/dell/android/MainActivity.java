@@ -1,31 +1,31 @@
 package com.example.dell.android;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.example.dell.android.adapter.headerAdapter;
 import com.example.dell.android.adapter.itemAdapter;
+import com.example.dell.android.model.Note;
 import com.example.dell.android.model.item;
 import com.example.dell.android.util.dbUtil;
 import com.yalantis.phoenix.PullToRefreshView;
 import com.youth.xframe.adapter.decoration.DividerDecoration;
-import com.youth.xframe.adapter.decoration.StickyHeaderDecoration;
 import com.youth.xframe.utils.log.XLog;
 
-import org.michaelbel.bottomsheet.BottomSheet;
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
+    private List<Note> notes;
     public static ArrayList<item> itemList = new ArrayList<>();
     public static boolean top;
     public static int num = 0;
@@ -40,11 +40,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData(Bundle bundle) {
-        //初始化数据
-        itemList = dbUtil.query(getApplicationContext());
-        XLog.list(itemList);
-        predo(itemList);
-        XLog.list(itemList);
+        notes = LitePal.findAll(Note.class,true);
     }
 
     @Override
@@ -53,7 +49,7 @@ public class MainActivity extends BaseActivity {
         mPullToRefreshView = findViewById(R.id.pull_to_refresh);
         mPullToRefreshView.setOnRefreshListener(refresh_listener);
         recyclerView = findViewById(R.id.listview);
-        adapter = new itemAdapter(recyclerView, itemList);
+        adapter = new itemAdapter(recyclerView, notes);
 //        adapter.setOnItemClickListener(click_listener);
 //        adapter.setOnItemLongClickListener(longclick_listener);
         /**---------------------------------------------------
@@ -67,8 +63,7 @@ public class MainActivity extends BaseActivity {
             public void click(int pos){
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 intent.putExtra("title", "便签详情");
-                item i = adapter.getItem(pos);
-                intent.putExtra("item",i);
+                intent.putExtra("note",notes.get(pos));
                 startActivity(intent);
             }
 
@@ -76,7 +71,7 @@ public class MainActivity extends BaseActivity {
             public void longclick(final int pos){
                 //TODO 长按事件
                 //删除便签，置顶，取消
-                final String[] items;
+                /*final String[] items;
                 if(!adapter.getItem(pos).isTop()) {
                     items = new String[] {
                             "置顶",
@@ -103,7 +98,7 @@ public class MainActivity extends BaseActivity {
                                 /**
                                  * 置顶 由于adapter刷新问题，显示有bug，故在更新后有读取一次数据库，重置所有item
                                  * 有些僵硬
-                                 */
+                                 *//*
                                 //TODO 暂时有问题
                                 item i = adapter.getItem(pos);
                                 adapter.remove(pos);
@@ -128,7 +123,7 @@ public class MainActivity extends BaseActivity {
                 builder.setItemTextColor(0xFFFF5252);
                 builder.setBackgroundColor(Color.WHITE);
                 builder.setDividers(true);
-                builder.show();
+                builder.show();*/
             }
 
 
@@ -141,13 +136,13 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onTop(int pos) {
-                item i = adapter.getItem(pos);
+//                item i = adapter.getItem(pos);
 //                adapter.remove(pos);
 //                adapter.add(0, i);
-                dbUtil.update_top(getApplicationContext(), i.getTime(), !i.isTop());
-                itemList = dbUtil.query(getApplicationContext());
-                predo(itemList);
-                adapter.setDataLists(itemList);
+//                dbUtil.update_top(getApplicationContext(), i.getTime(), !i.isTop());
+//                itemList = dbUtil.query(getApplicationContext());
+//                predo(itemList);
+                adapter.setDataLists(notes);
                 Toast.makeText(getApplicationContext(),"top clicked",Toast.LENGTH_SHORT).show();
             }
         });
@@ -155,9 +150,9 @@ public class MainActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         //设置header
-        StickyHeaderDecoration decoration = new StickyHeaderDecoration(new headerAdapter(this));
-        decoration.setIncludeHeader(false);
-        recyclerView.addItemDecoration(decoration);
+//        StickyHeaderDecoration decoration = new StickyHeaderDecoration(new headerAdapter(this));
+//        decoration.setIncludeHeader(false);
+//        recyclerView.addItemDecoration(decoration);
     }
 
     @Override
@@ -165,9 +160,10 @@ public class MainActivity extends BaseActivity {
         /**
          * 期望在这里存储数据库，之后会有修改
          */
-        itemList = dbUtil.query(getApplicationContext());
-        predo(itemList);
-        adapter.setDataLists(itemList);
+        notes = LitePal.findAll(Note.class,true);
+        XLog.list(notes);
+        adapter.notifyDataSetChanged();
+//        Log.i("debug",notes.get(0).getTime());
         super.onResume();
     }
 
@@ -204,13 +200,12 @@ public class MainActivity extends BaseActivity {
             mPullToRefreshView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //TODO
                     /**
                      * 读取数据库，更新所有item
                      */
-                    itemList = dbUtil.query(getApplicationContext());
-                    predo(itemList);
-                    adapter.setDataLists(itemList);
+                    notes = LitePal.findAll(Note.class);
+                    XLog.list(notes);
+                    adapter.notifyDataSetChanged();
                     mPullToRefreshView.setRefreshing(false);
                 }
             }, 1000);
@@ -227,4 +222,3 @@ public class MainActivity extends BaseActivity {
         }
     }
 }
-//redo branch

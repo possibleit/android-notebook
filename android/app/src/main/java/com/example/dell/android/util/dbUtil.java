@@ -12,8 +12,9 @@ import com.example.dell.android.model.item;
 import java.util.ArrayList;
 
 public class dbUtil {
+
     public static SQLiteDatabase getDataBase(Context context){
-        database_openhelper openhelper = new database_openhelper(context,"note.db",null,5);
+        database_openhelper openhelper = new database_openhelper(context,"note.db",null,6);
         return openhelper.getWritableDatabase();
     }
     public static void insert(Context context, item i){

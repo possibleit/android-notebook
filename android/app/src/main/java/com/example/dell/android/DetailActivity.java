@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
+import com.example.dell.android.MyView.RichTextEditor;
+import com.example.dell.android.model.Note;
 import com.example.dell.android.model.item;
 import com.example.dell.android.util.dbUtil;
 
@@ -22,9 +24,10 @@ import org.michaelbel.bottomsheet.BottomSheet;
 import static com.example.dell.android.MainActivity.itemList;
 
 public class DetailActivity extends BaseActivity {
-    private EditText detail_text;
+    private Note note;
+
     private Button button_share,button_del;
-    private ImageView detail_img;
+    private com.sendtion.xrichtext.RichTextEditor editor;
     item i = null;
     @Override
     public int getLayoutId(){
@@ -34,20 +37,14 @@ public class DetailActivity extends BaseActivity {
     @Override
     public void initData(Bundle bundle){
         Intent intent = getIntent();
-        i = (item) intent.getSerializableExtra("item");
+        //获取里面的Persion里面的数据
+        note = (Note) intent.getSerializableExtra("note");
     }
 
     @Override
     public void initView() {
-        detail_text = findViewById(R.id.detail_text);
-        detail_text.setText(i.getText());
-        detail_text.setEnabled(false);
-        detail_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                detail_text.setEnabled(true);
-            }
-        });
+
+        editor = findViewById(R.id.et_new_content);
         button_del = findViewById(R.id.btn_delete);
         button_del.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,15 +75,13 @@ public class DetailActivity extends BaseActivity {
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setType("text/plain");
                                 intent.putExtra(Intent.EXTRA_SUBJECT, "连接分享");
-                                intent.putExtra(Intent.EXTRA_TEXT, detail_text.getText());
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(Intent.createChooser(intent, "连接分享"));
                                 break;
                             case 1:
                                 Bitmap b = shot(findViewById(R.id.scr));
 
-                                detail_img = findViewById(R.id.detail_img);
-                                detail_img.setImageBitmap(b);
+
                                 //用这种方法parse Uri会出现截出的图片背景色为黑色
 
                                 Uri imageUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), b, null, null));
@@ -106,10 +101,7 @@ public class DetailActivity extends BaseActivity {
 
             }
         });
-         if (i.isType()) {
-                    detail_img = findViewById(R.id.detail_img);
-                    detail_img.setImageURI(Uri.parse(i.getPath()));
-                }
+
     }
 
     public Bitmap shot(View view) {

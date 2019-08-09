@@ -27,7 +27,6 @@ public class database_openhelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db,int oldversion,int newversion){
         if(newversion > oldversion){
             db.execSQL("drop table if exists note");
-            db.execSQL(CREATE_TABLE);
         }
     }
 }

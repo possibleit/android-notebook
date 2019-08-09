@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">android仿微博</string>
+    <string name="app_name">NoteBook</string>
     <string name="write_addpic">添加图片</string>
     <string name="write_share">Share</string>
     <string name="list_top">置顶</string>

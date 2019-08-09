@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,31 +14,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.dell.android.MyView.MyEditText;
 import com.example.dell.android.MyView.RichTextEditor;
-import com.example.dell.android.model.item;
-import com.example.dell.android.util.Fulltask;
-import com.example.dell.android.util.dbUtil;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.example.dell.android.model.InputStr;
+import com.example.dell.android.model.Note;
+//import com.zhy.http.okhttp.OkHttpUtils;
+//import com.zhy.http.okhttp.callback.StringCallback;
 import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
-
-import org.michaelbel.bottomsheet.BottomSheet;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Call;
-
 public class writeActivity extends BaseActivity{
+
+    private RichTextEditor et_new_content;
+    private int is_click = 0;
     private static final int IMAGE_PICKER = 1001;
     private boolean type = false;
     static File file;
@@ -59,8 +52,6 @@ public class writeActivity extends BaseActivity{
 
     @Override
     public void initView(){
-//        editText = findViewById(R.id.edit_1);
-//        img_1 = findViewById(R.id.img_1);
         richTextEditor = findViewById(R.id.richEditor);
         button_share = findViewById(R.id.share);
         button_share.setClickable(false);
@@ -132,7 +123,10 @@ public class writeActivity extends BaseActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_write_done:
-               save();
+                if (is_click == 0) {
+                    save();
+                    is_click = 1;
+                }
                button_share.setClickable(true);
                break;
         }
@@ -159,80 +153,69 @@ public class writeActivity extends BaseActivity{
     public void save(){
         Date date = new Date();
         List<RichTextEditor.EditData> editList = richTextEditor.buildEditData();
-        map =  dealEditData(editList);
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         final String time = df.format(date);
-        if(!map.get("imagepath").equals("")){
-            type = true;
-        }
-        item i = new item(time,map.get("text"),type,map.get("imagepath") );
-        Toast.makeText(getApplicationContext(),time + map.get("text"),Toast.LENGTH_LONG).show();
-        dbUtil.insert(getApplicationContext(),i);
-//        new Thread(new Runnable() {
-//           @Override
-//           public void run() {
-//                if(!map.get("imagepath").equals("")){
-//                    file = new File(map.get("imagepath"));
-//                    OkHttpUtils.post()//
-//                            .addFile("file", "messenger_01.jpg", file)//
-//                            .url("http://10.0.2.2:8001/sendimg/")
-//    //                                .params(params)//
-//    //                                .headers(headers)//
-//                            .build()//
-//                            .execute(new StringCallback() {
-//                                @Override
-//                                public void onError(Call call, Exception e, int id) {
-//                                    Log.i("result", e.toString());
-//                                }
-//
-//                                @Override
-//                                public void onResponse(String response, int id) {
-//                                    Log.i("result", response);
-//                                }
-//                            });
-//                }
-//                HashMap<String,String > map = new HashMap<>();
-//                map.put("name","yang");
-//                map.put("time",time);
-////                map.put("text",text);
-//                String s2 = Fulltask.getResult("http://10.0.2.2:8001/",map,"send/");
-//                Log.i("result",s2);
-//            }
-//        }).start();
-    }
 
+        Note note = new Note();
+        note.setTime(time);
+        note.save();
 
-    protected HashMap<String, String> dealEditData(List<RichTextEditor.EditData> editList) {
-        String sum = "";
-        String path = "";
-        map = new HashMap<>();
-        for (RichTextEditor.EditData itemData : editList) {
-            if (itemData.inputStr != null) {
-                sum = sum + itemData.inputStr;
-                Log.d("RichEditor", "commit inputStr=" + itemData.inputStr);
-            } else if (itemData.imagePath != null) {
-                Log.d("RichEditor", "commit imgePath=" + itemData.imagePath);
-                path = itemData.imagePath;
+        int s = editList.size();
+        for(int i = 0;i < s;i++){
+            RichTextEditor.EditData editData = editList.get(i);
+            if (editData.inputStr != null) {
+                InputStr inputStr = new InputStr();
+                Log.e("debug",editData.inputStr);
+                inputStr.setText(editData.inputStr);
+                inputStr.setNote(note);
+                inputStr.setOrder(i);
+                inputStr.setMode("TEXT");
+                inputStr.save();
+//                note.getTextList().add(inputStr);
+            }else if(editData.imagePath != null){
+                InputStr inputStr = new InputStr();
+                Log.e("debug",editData.imagePath);
+                inputStr.setText(editData.imagePath);
+                inputStr.setNote(note);
+                inputStr.setOrder(i);
+                inputStr.setMode("IMG");
+                inputStr.save();
+//                note.getTextList().add(inputStr);
             }
         }
-        map.put("text",sum);
-        map.put("imagepath",path);
-        return map;
+
     }
 
     private void insertBitmap(String imagePath) {
         richTextEditor.insertImage(imagePath);
     }
-
     public Bitmap shot2(View view) {
         /**
-         * 创建一个bitmap放于画布之上进行绘制 （简直如有神助）
+         * 创建一个bitmap放于画布之上进行绘制
          */
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),
                 view.getHeight(), Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
+    }
+
+
+    private String getEditData() {
+        StringBuilder content = new StringBuilder();
+        try {
+            List<RichTextEditor.EditData> editList = et_new_content.buildEditData();
+            for (RichTextEditor.EditData itemData : editList) {
+                if (itemData.inputStr != null) {
+                    content.append(itemData.inputStr);
+                } else if (itemData.imagePath != null) {
+                    content.append("<img src=\"").append(itemData.imagePath).append("\"/>");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return content.toString();
     }
 }

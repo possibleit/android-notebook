@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.example.dell.android.R;
+import com.example.dell.android.model.InputStr;
+import com.example.dell.android.model.Note;
 
 /**
  * 这是一个富文本编辑器，给外部提供insertImage接口，添加的图片跟当前光标所在位置有关
@@ -390,6 +392,18 @@ public class RichTextEditor extends ScrollView {
         }
 
         return dataList;
+    }
+
+    public void setDataList(Note note){
+        int i = 0;
+        for (InputStr inputStr : note.getTextList()){
+            if(inputStr.getMode().equals("TEXT")){
+                addEditTextAtIndex(i,inputStr.getText());
+            }else if(inputStr.getMode().equals("IMG")){
+                Bitmap bmp = getScaledBitmap(inputStr.getText(), getWidth());
+                addImageViewAtIndex(i, bmp, inputStr.getText());
+            }
+        }
     }
 
     public class EditData {

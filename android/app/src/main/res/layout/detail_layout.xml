@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/scr"
+<RelativeLayout android:id="@+id/scr"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.sendtion.xrichtext.RichTextEditor
+        android:id="@+id/et_new_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:rt_editor_text_line_space="6dp"
+        app:rt_editor_image_height="500"
+        app:rt_editor_image_bottom="10"
+        app:rt_editor_text_init_hint="在这里输入内容"
+        app:rt_editor_text_size="16sp"
+        app:rt_editor_text_color="@color/grey_900"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_text"
-            android:layout_margin="2dp"
-            />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/detail_text"
-            android:id="@+id/detail_img"/>
     <LinearLayout
         android:id="@+id/bot"
         android:layout_width="match_parent"
