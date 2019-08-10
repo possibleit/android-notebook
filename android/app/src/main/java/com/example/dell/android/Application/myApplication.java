@@ -1,12 +1,6 @@
 package com.example.dell.android.Application;
 
-import android.app.Application;
-import android.content.Context;
-import android.support.v4.content.ContextCompat;
-
-import com.example.dell.android.ImageLoader.GlideImageLoader;
 import com.example.dell.android.ImageLoader.PicassoImageLoader;
-import com.example.dell.android.R;
 //import com.imnjh.imagepicker.PickerConfig;
 //import com.imnjh.imagepicker.SImagePicker;
 import com.lzy.imagepicker.ImagePicker;
@@ -14,10 +8,6 @@ import com.lzy.imagepicker.view.CropImageView;
 import com.youth.xframe.XFrame;
 
 import org.litepal.LitePalApplication;
-
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
 
 public class myApplication extends LitePalApplication {
     @Override

@@ -27,11 +27,10 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="db75a212-1dd6-4ef3-ac6f-ee8b855a0e4d">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from note
-select * from inputstr]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main" />
     </connection>
     <connection id="f65dd1d8-0f95-4164-815e-f385047a152e">
-      <console name="Connection 1" type="STANDARD" schema="main" session="Main"><![CDATA[select * from inputstr]]></console>
+      <console name="Connection 1" type="STANDARD" schema="main" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
